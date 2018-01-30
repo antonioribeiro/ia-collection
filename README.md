@@ -7,7 +7,9 @@
 <!-- [![Total Downloads][ico-downloads]][link-downloads] -->
 <!-- [![Quality Score][ico-code-quality]][link-code-quality] -->
 
-This package is an **unmodified** extraction of the [Laravel's Illuminate\Support\Collection](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Collection.php) class, including all helpers, repackaged to be agnostic and available to any PHP project. 
+This package is an **unmodified** extraction of the [Laravel's Illuminate\Support\Collection](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Collection.php) class, including all helpers, repackaged to be agnostic and available to any PHP project.   
+
+It has its own namespace **(IlluminateAgnostic\Collection)**, so you can even use om Laravel apps without risking a namespace conflict.
 
 For docs, please check the Laravel documentation: https://laravel.com/docs/5.5/collections.
 
@@ -22,7 +24,7 @@ $ composer require pragmarx/ia-collection
 ## Usage
 
 ``` php
-use IlluminateAgnostic\Arr;
+use IlluminateAgnostic\Collection\Support\Collection;
 
 return (new Collection([1, 2, 3, 4, 5]))->sum()
 
