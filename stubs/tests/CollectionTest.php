@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 class SupportCollectionTest extends TestCase
 {
-     public function testGetWithNullReturnsNull()
+    public function testGetWithNullReturnsNull()
     {
         $collection = new Collection([1, 2, 3]);
 
