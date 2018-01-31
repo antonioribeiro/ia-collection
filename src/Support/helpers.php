@@ -6,19 +6,6 @@ use IlluminateAgnostic\Collection\Support\Collection;
 use IlluminateAgnostic\Collection\Support\Debug\Dumper;
 use Illuminate\Support\Collection as IlluminateCollection;
 
-if (! function_exists('array_wrap')) {
-    /**
-     * If the given value is not an array, wrap it in one.
-     *
-     * @param  mixed  $value
-     * @return array
-     */
-    function array_wrap($value)
-    {
-        return ! is_array($value) ? [$value] : $value;
-    }
-}
-
 if (! function_exists('collect')) {
     /**
      * Create a collection from the given value.
@@ -28,10 +15,6 @@ if (! function_exists('collect')) {
      */
     function collect($value = null)
     {
-        if (class_exists(IlluminateCollection::class)) {
-            return new IlluminateCollection($value);
-        }
-
         return new Collection($value);
     }
 }
@@ -66,7 +49,7 @@ if (! function_exists('data_get')) {
 
         $key = is_array($key) ? $key : explode('.', $key);
 
-        while (($segment = array_shift($key)) !== null) {
+        while (! is_null($segment = array_shift($key))) {
             if ($segment === '*') {
                 if ($target instanceof Collection) {
                     $target = $target->all();
@@ -91,6 +74,7 @@ if (! function_exists('data_get')) {
         return $target;
     }
 }
+
 
 if (! function_exists('with')) {
     /**
