@@ -1,5 +1,5 @@
 {
-    "name": "pragmarx/lia-collection",
+    "name": "pragmarx/ia-collection",
 
     "type": "library",
 
@@ -12,7 +12,7 @@
         "laravel"
     ],
 
-    "homepage": "https://github.com/antonioribeiro/lia-collection",
+    "homepage": "https://github.com/antonioribeiro/ia-collection",
 
     "license": "MIT",
 
