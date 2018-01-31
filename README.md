@@ -16,7 +16,7 @@
 
 This package is an **unmodified** extraction of the [Laravel's Illuminate\Support\Collection](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Collection.php) class, including all helpers, repackaged to be agnostic and available to any PHP project.   
 
-It has its own namespace **(IlluminateAgnostic\Collection)**, so you can even use om Laravel apps without risking a namespace conflict.
+It has its own namespace **(IlluminateAgnostic\Collection)**, so you can use it even on Laravel apps without risking a namespace conflict.
 
 For docs, please check the Laravel documentation: https://laravel.com/docs/5.5/collections.
 
