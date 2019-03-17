@@ -5,9 +5,10 @@ namespace IlluminateAgnostic\Collection\Tests\Support;
 use DateTime;
 use DateTimeInterface;
 use BadMethodCallException;
+use Carbon\CarbonImmutable;
+use IlluminateAgnostic\Collection\Support\Carbon;
 use PHPUnit\Framework\TestCase;
 use Carbon\Carbon as BaseCarbon;
-use IlluminateAgnostic\Collection\Support\Carbon;
 
 class SupportCarbonTest extends TestCase
 {
@@ -16,16 +17,14 @@ class SupportCarbonTest extends TestCase
      */
     protected $now;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        Carbon::setTestNow(
-            $this->now = Carbon::create(2017, 6, 27, 13, 14, 15, 'UTC')
-        );
+        Carbon::setTestNow($this->now = Carbon::create(2017, 6, 27, 13, 14, 15, 'UTC'));
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         Carbon::setTestNow();
         Carbon::serializeUsing(null);
@@ -43,49 +42,34 @@ class SupportCarbonTest extends TestCase
 
     public function testCarbonIsMacroableWhenNotCalledStatically()
     {
-        Carbon::macro('diffInDecades', function (
-            Carbon $dt = null,
-            $abs = true
-        ) {
+        Carbon::macro('diffInDecades', function (Carbon $dt = null, $abs = true) {
             return (int) ($this->diffInYears($dt, $abs) / 10);
         });
 
-        $this->assertSame(
-            2,
-            $this->now->diffInDecades(Carbon::now()->addYears(25))
-        );
+        $this->assertSame(2, $this->now->diffInDecades(Carbon::now()->addYears(25)));
     }
 
     public function testCarbonIsMacroableWhenCalledStatically()
     {
         Carbon::macro('twoDaysAgoAtNoon', function () {
-            return Carbon::now()
-                ->subDays(2)
-                ->setTime(12, 0, 0);
+            return Carbon::now()->subDays(2)->setTime(12, 0, 0);
         });
 
-        $this->assertSame(
-            '2017-06-25 12:00:00',
-            Carbon::twoDaysAgoAtNoon()->toDateTimeString()
-        );
+        $this->assertSame('2017-06-25 12:00:00', Carbon::twoDaysAgoAtNoon()->toDateTimeString());
     }
 
-    /**
-     * expectedExceptionMessage nonExistingStaticMacro does not exist.
-     */
     public function testCarbonRaisesExceptionWhenStaticMacroIsNotFound()
     {
         $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('nonExistingStaticMacro does not exist.');
 
         Carbon::nonExistingStaticMacro();
     }
 
-    /**
-     * expectedExceptionMessage nonExistingMacro does not exist.
-     */
     public function testCarbonRaisesExceptionWhenMacroIsNotFound()
     {
         $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('nonExistingMacro does not exist.');
 
         Carbon::now()->nonExistingMacro();
     }
@@ -103,14 +87,11 @@ class SupportCarbonTest extends TestCase
 
     public function testCarbonCanSerializeToJson()
     {
-        $this->assertSame(
-            [
-                'date' => '2017-06-27 13:14:15.000000',
-                'timezone_type' => 3,
-                'timezone' => 'UTC',
-            ],
-            $this->now->jsonSerialize()
-        );
+        $this->assertSame(class_exists(CarbonImmutable::class) ? '2017-06-27T13:14:15.000000Z' : [
+            'date' => '2017-06-27 13:14:15.000000',
+            'timezone_type' => 3,
+            'timezone' => 'UTC',
+        ], $this->now->jsonSerialize());
     }
 
     public function testSetStateReturnsCorrectType()
@@ -127,7 +108,7 @@ class SupportCarbonTest extends TestCase
     public function testDeserializationOccursCorrectly()
     {
         $carbon = new Carbon('2017-06-27 13:14:15.000000');
-        $serialized = 'return ' . var_export($carbon, true) . ';';
+        $serialized = 'return '.var_export($carbon, true).';';
         $deserialized = eval($serialized);
 
         $this->assertInstanceOf(Carbon::class, $deserialized);
