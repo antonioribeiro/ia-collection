@@ -56,7 +56,10 @@ class HigherOrderCollectionProxy
      */
     public function __call($method, $parameters)
     {
-        return $this->collection->{$this->method}(function ($value) use ($method, $parameters) {
+        return $this->collection->{$this->method}(function ($value) use (
+            $method,
+            $parameters
+        ) {
             return $value->{$method}(...$parameters);
         });
     }

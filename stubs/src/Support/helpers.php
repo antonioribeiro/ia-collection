@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Debug\Dumper;
 use Vanilla\Support\Collection as VanillaCollection;
 
-if (! function_exists('collect')) {
+if (!function_exists('collect')) {
     /**
      * Create a collection from the given value.
      *
@@ -19,7 +19,7 @@ if (! function_exists('collect')) {
     }
 }
 
-if (! function_exists('value')) {
+if (!function_exists('value')) {
     /**
      * Return the default value of the given value.
      *
@@ -32,7 +32,7 @@ if (! function_exists('value')) {
     }
 }
 
-if (! function_exists('data_get')) {
+if (!function_exists('data_get')) {
     /**
      * Get an item from an array or object using "dot" notation.
      *
@@ -49,11 +49,11 @@ if (! function_exists('data_get')) {
 
         $key = is_array($key) ? $key : explode('.', $key);
 
-        while (! is_null($segment = array_shift($key))) {
+        while (!is_null($segment = array_shift($key))) {
             if ($segment === '*') {
                 if ($target instanceof Collection) {
                     $target = $target->all();
-                } elseif (! is_array($target)) {
+                } elseif (!is_array($target)) {
                     return value($default);
                 }
 
@@ -75,8 +75,7 @@ if (! function_exists('data_get')) {
     }
 }
 
-
-if (! function_exists('with')) {
+if (!function_exists('with')) {
     /**
      * Return the given object. Useful for chaining.
      *
@@ -89,7 +88,7 @@ if (! function_exists('with')) {
     }
 }
 
-if (! function_exists('dd')) {
+if (!function_exists('dd')) {
     /**
      * Dump the passed variables and end the script.
      *
@@ -99,13 +98,13 @@ if (! function_exists('dd')) {
     function dd(...$args)
     {
         foreach ($args as $x) {
-            (new Dumper)->dump($x);
+            (new Dumper())->dump($x);
         }
         die(1);
     }
 }
 
-if (! function_exists('studly_case')) {
+if (!function_exists('studly_case')) {
     /**
      * Convert a value to studly caps case.
      *

@@ -9,14 +9,14 @@ class SupportMacroableTest extends TestCase
 {
     private $macroable;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->macroable = $this->createObjectForTrait();
     }
 
     private function createObjectForTrait()
     {
-        return new EmptyMacroable;
+        return new EmptyMacroable();
     }
 
     public function testRegisterMacro()
@@ -45,7 +45,7 @@ class SupportMacroableTest extends TestCase
         TestMacroable::macro('tryStatic', function () {
             return static::getProtectedStatic();
         });
-        $instance = new TestMacroable;
+        $instance = new TestMacroable();
 
         $result = $instance->tryInstance();
         $this->assertEquals('instance', $result);
@@ -56,8 +56,8 @@ class SupportMacroableTest extends TestCase
 
     public function testClassBasedMacros()
     {
-        TestMacroable::mixin(new TestMixin);
-        $instance = new TestMacroable;
+        TestMacroable::mixin(new TestMixin());
+        $instance = new TestMacroable();
         $this->assertEquals('instance-Adam', $instance->methodOne('Adam'));
     }
 }
@@ -91,7 +91,7 @@ class TestMixin
     protected function methodTwo()
     {
         return function ($value) {
-            return $this->protectedVariable.'-'.$value;
+            return $this->protectedVariable . '-' . $value;
         };
     }
 }

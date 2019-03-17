@@ -72,14 +72,17 @@ trait Macroable
      */
     public static function __callStatic($method, $parameters)
     {
-        if (! static::hasMacro($method)) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
+        if (!static::hasMacro($method)) {
+            throw new BadMethodCallException(
+                sprintf('Method %s::%s does not exist.', static::class, $method)
+            );
         }
 
         if (static::$macros[$method] instanceof Closure) {
-            return call_user_func_array(Closure::bind(static::$macros[$method], null, static::class), $parameters);
+            return call_user_func_array(
+                Closure::bind(static::$macros[$method], null, static::class),
+                $parameters
+            );
         }
 
         return call_user_func_array(static::$macros[$method], $parameters);
@@ -96,16 +99,19 @@ trait Macroable
      */
     public function __call($method, $parameters)
     {
-        if (! static::hasMacro($method)) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
+        if (!static::hasMacro($method)) {
+            throw new BadMethodCallException(
+                sprintf('Method %s::%s does not exist.', static::class, $method)
+            );
         }
 
         $macro = static::$macros[$method];
 
         if ($macro instanceof Closure) {
-            return call_user_func_array($macro->bindTo($this, static::class), $parameters);
+            return call_user_func_array(
+                $macro->bindTo($this, static::class),
+                $parameters
+            );
         }
 
         return call_user_func_array($macro, $parameters);

@@ -17,19 +17,28 @@ class SupportStrTest extends TestCase
 
     public function testStringTrimmedOnlyWhereNecessary()
     {
-        $this->assertEquals(' Taylor Otwell ', Str::words(' Taylor Otwell ', 3));
+        $this->assertEquals(
+            ' Taylor Otwell ',
+            Str::words(' Taylor Otwell ', 3)
+        );
         $this->assertEquals(' Taylor...', Str::words(' Taylor Otwell ', 1));
     }
 
     public function testStringTitle()
     {
-        $this->assertEquals('Jefferson Costella', Str::title('jefferson costella'));
-        $this->assertEquals('Jefferson Costella', Str::title('jefFErson coSTella'));
+        $this->assertEquals(
+            'Jefferson Costella',
+            Str::title('jefferson costella')
+        );
+        $this->assertEquals(
+            'Jefferson Costella',
+            Str::title('jefFErson coSTella')
+        );
     }
 
     public function testStringWithoutWordsDoesntProduceError()
     {
-        $nbsp = chr(0xC2).chr(0xA0);
+        $nbsp = chr(0xc2) . chr(0xa0);
         $this->assertEquals(' ', Str::words(' '));
         $this->assertEquals($nbsp, Str::words($nbsp));
     }
@@ -42,7 +51,10 @@ class SupportStrTest extends TestCase
 
     public function testStringAsciiWithSpecificLocale()
     {
-        $this->assertSame('h H sht SHT a A y Y', Str::ascii('х Х щ Щ ъ Ъ ь Ь', 'bg'));
+        $this->assertSame(
+            'h H sht SHT a A y Y',
+            Str::ascii('х Х щ Щ ъ Ъ ь Ь', 'bg')
+        );
         $this->assertSame('ae oe ue AE OE UE', Str::ascii('ä ö ü Ä Ö Ü', 'de'));
     }
 
@@ -131,8 +143,14 @@ class SupportStrTest extends TestCase
 
     public function testParseCallback()
     {
-        $this->assertEquals(['Class', 'method'], Str::parseCallback('Class@method', 'foo'));
-        $this->assertEquals(['Class', 'foo'], Str::parseCallback('Class', 'foo'));
+        $this->assertEquals(
+            ['Class', 'method'],
+            Str::parseCallback('Class@method', 'foo')
+        );
+        $this->assertEquals(
+            ['Class', 'foo'],
+            Str::parseCallback('Class', 'foo')
+        );
     }
 
     public function testSlug()
@@ -142,6 +160,7 @@ class SupportStrTest extends TestCase
         $this->assertEquals('hello-world', Str::slug('hello_world'));
         $this->assertEquals('hello_world', Str::slug('hello_world', '_'));
         $this->assertEquals('user-at-host', Str::slug('user@host'));
+        $this->assertEquals('سلام-دنیا', Str::slug('سلام دنیا', '-', null));
     }
 
     public function testFinish()
@@ -157,6 +176,25 @@ class SupportStrTest extends TestCase
         $this->assertFalse(Str::is('/', ' /'));
         $this->assertFalse(Str::is('/', '/a'));
         $this->assertTrue(Str::is('foo/*', 'foo/bar/baz'));
+
+        $this->assertTrue(Str::is('*@*', 'App\Class@method'));
+        $this->assertTrue(Str::is('*@*', 'app\Class@'));
+        $this->assertTrue(Str::is('*@*', '@method'));
+
+        // is case sensitive
+        $this->assertFalse(Str::is('*BAZ*', 'foo/bar/baz'));
+        $this->assertFalse(Str::is('*FOO*', 'foo/bar/baz'));
+        $this->assertFalse(Str::is('A', 'a'));
+
+        // Accepts array of patterns
+        $this->assertTrue(Str::is(['a*', 'b*'], 'a/'));
+        $this->assertTrue(Str::is(['a*', 'b*'], 'b/'));
+        $this->assertFalse(Str::is(['a*', 'b*'], 'f/'));
+
+        // numeric values and patterns
+        $this->assertFalse(Str::is(['a*', 'b*'], 123));
+        $this->assertTrue(Str::is(['*2*', 'b*'], 11211));
+
         $this->assertTrue(Str::is('*/foo', 'blah/baz/foo'));
 
         $valueObject = new StringableObjectStub('foo/bar/baz');
@@ -168,7 +206,10 @@ class SupportStrTest extends TestCase
 
     public function testKebab()
     {
-        $this->assertEquals('laravel-php-framework', Str::kebab('LaravelPhpFramework'));
+        $this->assertEquals(
+            'laravel-php-framework',
+            Str::kebab('LaravelPhpFramework')
+        );
     }
 
     public function testLower()
@@ -185,7 +226,13 @@ class SupportStrTest extends TestCase
 
     public function testLimit()
     {
-        $this->assertEquals('Laravel is...', Str::limit('Laravel is a free, open source PHP web application framework.', 10));
+        $this->assertEquals(
+            'Laravel is...',
+            Str::limit(
+                'Laravel is a free, open source PHP web application framework.',
+                10
+            )
+        );
         $this->assertEquals('这是一...', Str::limit('这是一段中文', 6));
     }
 
@@ -198,70 +245,178 @@ class SupportStrTest extends TestCase
     {
         $this->assertEquals(16, strlen(Str::random()));
         $randomInteger = random_int(1, 100);
-        $this->assertEquals($randomInteger, strlen(Str::random($randomInteger)));
-        $this->assertInternalType('string', Str::random());
+        $this->assertEquals(
+            $randomInteger,
+            strlen(Str::random($randomInteger))
+        );
+        $this->assertIsString(Str::random());
     }
 
     public function testReplaceArray()
     {
-        $this->assertEquals('foo/bar/baz', Str::replaceArray('?', ['foo', 'bar', 'baz'], '?/?/?'));
-        $this->assertEquals('foo/bar/baz/?', Str::replaceArray('?', ['foo', 'bar', 'baz'], '?/?/?/?'));
-        $this->assertEquals('foo/bar', Str::replaceArray('?', ['foo', 'bar', 'baz'], '?/?'));
-        $this->assertEquals('?/?/?', Str::replaceArray('x', ['foo', 'bar', 'baz'], '?/?/?'));
+        $this->assertEquals(
+            'foo/bar/baz',
+            Str::replaceArray('?', ['foo', 'bar', 'baz'], '?/?/?')
+        );
+        $this->assertEquals(
+            'foo/bar/baz/?',
+            Str::replaceArray('?', ['foo', 'bar', 'baz'], '?/?/?/?')
+        );
+        $this->assertEquals(
+            'foo/bar',
+            Str::replaceArray('?', ['foo', 'bar', 'baz'], '?/?')
+        );
+        $this->assertEquals(
+            '?/?/?',
+            Str::replaceArray('x', ['foo', 'bar', 'baz'], '?/?/?')
+        );
     }
 
     public function testReplaceFirst()
     {
-        $this->assertEquals('fooqux foobar', Str::replaceFirst('bar', 'qux', 'foobar foobar'));
-        $this->assertEquals('foo/qux? foo/bar?', Str::replaceFirst('bar?', 'qux?', 'foo/bar? foo/bar?'));
-        $this->assertEquals('foo foobar', Str::replaceFirst('bar', '', 'foobar foobar'));
-        $this->assertEquals('foobar foobar', Str::replaceFirst('xxx', 'yyy', 'foobar foobar'));
-        $this->assertEquals('foobar foobar', Str::replaceFirst('', 'yyy', 'foobar foobar'));
+        $this->assertEquals(
+            'fooqux foobar',
+            Str::replaceFirst('bar', 'qux', 'foobar foobar')
+        );
+        $this->assertEquals(
+            'foo/qux? foo/bar?',
+            Str::replaceFirst('bar?', 'qux?', 'foo/bar? foo/bar?')
+        );
+        $this->assertEquals(
+            'foo foobar',
+            Str::replaceFirst('bar', '', 'foobar foobar')
+        );
+        $this->assertEquals(
+            'foobar foobar',
+            Str::replaceFirst('xxx', 'yyy', 'foobar foobar')
+        );
+        $this->assertEquals(
+            'foobar foobar',
+            Str::replaceFirst('', 'yyy', 'foobar foobar')
+        );
         // Test for multibyte string support
-        $this->assertEquals('Jxxxnköping Malmö', Str::replaceFirst('ö', 'xxx', 'Jönköping Malmö'));
-        $this->assertEquals('Jönköping Malmö', Str::replaceFirst('', 'yyy', 'Jönköping Malmö'));
+        $this->assertEquals(
+            'Jxxxnköping Malmö',
+            Str::replaceFirst('ö', 'xxx', 'Jönköping Malmö')
+        );
+        $this->assertEquals(
+            'Jönköping Malmö',
+            Str::replaceFirst('', 'yyy', 'Jönköping Malmö')
+        );
     }
 
     public function testReplaceLast()
     {
-        $this->assertEquals('foobar fooqux', Str::replaceLast('bar', 'qux', 'foobar foobar'));
-        $this->assertEquals('foo/bar? foo/qux?', Str::replaceLast('bar?', 'qux?', 'foo/bar? foo/bar?'));
-        $this->assertEquals('foobar foo', Str::replaceLast('bar', '', 'foobar foobar'));
-        $this->assertEquals('foobar foobar', Str::replaceLast('xxx', 'yyy', 'foobar foobar'));
-        $this->assertEquals('foobar foobar', Str::replaceLast('', 'yyy', 'foobar foobar'));
+        $this->assertEquals(
+            'foobar fooqux',
+            Str::replaceLast('bar', 'qux', 'foobar foobar')
+        );
+        $this->assertEquals(
+            'foo/bar? foo/qux?',
+            Str::replaceLast('bar?', 'qux?', 'foo/bar? foo/bar?')
+        );
+        $this->assertEquals(
+            'foobar foo',
+            Str::replaceLast('bar', '', 'foobar foobar')
+        );
+        $this->assertEquals(
+            'foobar foobar',
+            Str::replaceLast('xxx', 'yyy', 'foobar foobar')
+        );
+        $this->assertEquals(
+            'foobar foobar',
+            Str::replaceLast('', 'yyy', 'foobar foobar')
+        );
         // Test for multibyte string support
-        $this->assertEquals('Malmö Jönkxxxping', Str::replaceLast('ö', 'xxx', 'Malmö Jönköping'));
-        $this->assertEquals('Malmö Jönköping', Str::replaceLast('', 'yyy', 'Malmö Jönköping'));
+        $this->assertEquals(
+            'Malmö Jönkxxxping',
+            Str::replaceLast('ö', 'xxx', 'Malmö Jönköping')
+        );
+        $this->assertEquals(
+            'Malmö Jönköping',
+            Str::replaceLast('', 'yyy', 'Malmö Jönköping')
+        );
     }
 
     public function testSnake()
     {
-        $this->assertEquals('laravel_p_h_p_framework', Str::snake('LaravelPHPFramework'));
-        $this->assertEquals('laravel_php_framework', Str::snake('LaravelPhpFramework'));
-        $this->assertEquals('laravel php framework', Str::snake('LaravelPhpFramework', ' '));
-        $this->assertEquals('laravel_php_framework', Str::snake('Laravel Php Framework'));
-        $this->assertEquals('laravel_php_framework', Str::snake('Laravel    Php      Framework   '));
+        $this->assertEquals(
+            'laravel_p_h_p_framework',
+            Str::snake('LaravelPHPFramework')
+        );
+        $this->assertEquals(
+            'laravel_php_framework',
+            Str::snake('LaravelPhpFramework')
+        );
+        $this->assertEquals(
+            'laravel php framework',
+            Str::snake('LaravelPhpFramework', ' ')
+        );
+        $this->assertEquals(
+            'laravel_php_framework',
+            Str::snake('Laravel Php Framework')
+        );
+        $this->assertEquals(
+            'laravel_php_framework',
+            Str::snake('Laravel    Php      Framework   ')
+        );
         // ensure cache keys don't overlap
-        $this->assertEquals('laravel__php__framework', Str::snake('LaravelPhpFramework', '__'));
-        $this->assertEquals('laravel_php_framework_', Str::snake('LaravelPhpFramework_', '_'));
-        $this->assertEquals('laravel_php_framework', Str::snake('laravel php Framework'));
-        $this->assertEquals('laravel_php_frame_work', Str::snake('laravel php FrameWork'));
+        $this->assertEquals(
+            'laravel__php__framework',
+            Str::snake('LaravelPhpFramework', '__')
+        );
+        $this->assertEquals(
+            'laravel_php_framework_',
+            Str::snake('LaravelPhpFramework_', '_')
+        );
+        $this->assertEquals(
+            'laravel_php_framework',
+            Str::snake('laravel php Framework')
+        );
+        $this->assertEquals(
+            'laravel_php_frame_work',
+            Str::snake('laravel php FrameWork')
+        );
     }
 
     public function testStudly()
     {
-        $this->assertEquals('LaravelPHPFramework', Str::studly('laravel_p_h_p_framework'));
-        $this->assertEquals('LaravelPhpFramework', Str::studly('laravel_php_framework'));
-        $this->assertEquals('LaravelPhPFramework', Str::studly('laravel-phP-framework'));
-        $this->assertEquals('LaravelPhpFramework', Str::studly('laravel  -_-  php   -_-   framework   '));
+        $this->assertEquals(
+            'LaravelPHPFramework',
+            Str::studly('laravel_p_h_p_framework')
+        );
+        $this->assertEquals(
+            'LaravelPhpFramework',
+            Str::studly('laravel_php_framework')
+        );
+        $this->assertEquals(
+            'LaravelPhPFramework',
+            Str::studly('laravel-phP-framework')
+        );
+        $this->assertEquals(
+            'LaravelPhpFramework',
+            Str::studly('laravel  -_-  php   -_-   framework   ')
+        );
     }
 
     public function testCamel()
     {
-        $this->assertEquals('laravelPHPFramework', Str::camel('Laravel_p_h_p_framework'));
-        $this->assertEquals('laravelPhpFramework', Str::camel('Laravel_php_framework'));
-        $this->assertEquals('laravelPhPFramework', Str::camel('Laravel-phP-framework'));
-        $this->assertEquals('laravelPhpFramework', Str::camel('Laravel  -_-  php   -_-   framework   '));
+        $this->assertEquals(
+            'laravelPHPFramework',
+            Str::camel('Laravel_p_h_p_framework')
+        );
+        $this->assertEquals(
+            'laravelPhpFramework',
+            Str::camel('Laravel_php_framework')
+        );
+        $this->assertEquals(
+            'laravelPhPFramework',
+            Str::camel('Laravel-phP-framework')
+        );
+        $this->assertEquals(
+            'laravelPhpFramework',
+            Str::camel('Laravel  -_-  php   -_-   framework   ')
+        );
     }
 
     public function testSubstr()
@@ -282,7 +437,10 @@ class SupportStrTest extends TestCase
     public function testUcfirst()
     {
         $this->assertEquals('Laravel', Str::ucfirst('laravel'));
-        $this->assertEquals('Laravel framework', Str::ucfirst('laravel framework'));
+        $this->assertEquals(
+            'Laravel framework',
+            Str::ucfirst('laravel framework')
+        );
         $this->assertEquals('Мама', Str::ucfirst('мама'));
         $this->assertEquals('Мама мыла раму', Str::ucfirst('мама мыла раму'));
     }
