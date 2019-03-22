@@ -19,7 +19,9 @@ class SupportCarbonTest extends TestCase
     {
         parent::setUp();
 
-        Carbon::setTestNow($this->now = Carbon::create(2017, 6, 27, 13, 14, 15, 'UTC'));
+        Carbon::setTestNow(
+            $this->now = Carbon::create(2017, 6, 27, 13, 14, 15, 'UTC')
+        );
     }
 
     public function tearDown()
@@ -40,20 +42,31 @@ class SupportCarbonTest extends TestCase
 
     public function testCarbonIsMacroableWhenNotCalledStatically()
     {
-        Carbon::macro('diffInDecades', function (Carbon $dt = null, $abs = true) {
+        Carbon::macro('diffInDecades', function (
+            Carbon $dt = null,
+            $abs = true
+        ) {
             return (int) ($this->diffInYears($dt, $abs) / 10);
         });
 
-        $this->assertSame(2, $this->now->diffInDecades(Carbon::now()->addYears(25)));
+        $this->assertSame(
+            2,
+            $this->now->diffInDecades(Carbon::now()->addYears(25))
+        );
     }
 
     public function testCarbonIsMacroableWhenCalledStatically()
     {
         Carbon::macro('twoDaysAgoAtNoon', function () {
-            return Carbon::now()->subDays(2)->setTime(12, 0, 0);
+            return Carbon::now()
+                ->subDays(2)
+                ->setTime(12, 0, 0);
         });
 
-        $this->assertSame('2017-06-25 12:00:00', Carbon::twoDaysAgoAtNoon()->toDateTimeString());
+        $this->assertSame(
+            '2017-06-25 12:00:00',
+            Carbon::twoDaysAgoAtNoon()->toDateTimeString()
+        );
     }
 
     /**
@@ -87,11 +100,18 @@ class SupportCarbonTest extends TestCase
 
     public function testCarbonCanSerializeToJson()
     {
-        $this->assertSame([
+        $v1 = [
             'date' => '2017-06-27 13:14:15.000000',
             'timezone_type' => 3,
             'timezone' => 'UTC',
-        ], $this->now->jsonSerialize());
+        ];
+
+        $v2 = '2017-06-27T13:14:15.000000Z';
+
+        $this->assertTrue(
+            $this->now->jsonSerialize() == $v1 ||
+                $this->now->jsonSerialize() == $v2
+        );
     }
 
     public function testSetStateReturnsCorrectType()
@@ -108,7 +128,7 @@ class SupportCarbonTest extends TestCase
     public function testDeserializationOccursCorrectly()
     {
         $carbon = new Carbon('2017-06-27 13:14:15.000000');
-        $serialized = 'return '.var_export($carbon, true).';';
+        $serialized = 'return ' . var_export($carbon, true) . ';';
         $deserialized = eval($serialized);
 
         $this->assertInstanceOf(Carbon::class, $deserialized);
