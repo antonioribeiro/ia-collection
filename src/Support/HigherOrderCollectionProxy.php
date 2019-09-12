@@ -3,14 +3,14 @@
 namespace IlluminateAgnostic\Collection\Support;
 
 /**
- * @mixin \IlluminateAgnostic\Collection\Support\Collection
+ * @mixin \IlluminateAgnostic\Collection\Support\Enumerable
  */
 class HigherOrderCollectionProxy
 {
     /**
      * The collection being operated on.
      *
-     * @var \IlluminateAgnostic\Collection\Support\Collection
+     * @var \IlluminateAgnostic\Collection\Support\Enumerable
      */
     protected $collection;
 
@@ -24,11 +24,11 @@ class HigherOrderCollectionProxy
     /**
      * Create a new proxy instance.
      *
-     * @param  \IlluminateAgnostic\Collection\Support\Collection  $collection
+     * @param  \IlluminateAgnostic\Collection\Support\Enumerable  $collection
      * @param  string  $method
      * @return void
      */
-    public function __construct(Collection $collection, $method)
+    public function __construct(Enumerable $collection, $method)
     {
         $this->method = $method;
         $this->collection = $collection;

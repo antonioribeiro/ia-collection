@@ -11,6 +11,8 @@ $aliases = [
     Illuminate\Support\Str::class => IlluminateAgnostic\Collection\Support\Str::class,
     Illuminate\Support\Debug\Dumper::class => IlluminateAgnostic\Collection\Support\Debug\Dumper::class,
     Illuminate\Support\Debug\HtmlDumper::class => IlluminateAgnostic\Collection\Support\Debug\HtmlDumper::class,
+    Illuminate\Support\Enumerable::class => IlluminateAgnostic\Collection\Support\Enumerable::class,
+    Illuminate\Support\LazyCollection::class => IlluminateAgnostic\Collection\Support\LazyCollection::class,
 ];
 
 foreach ($aliases as $illuminate => $tighten) {

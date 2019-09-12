@@ -88,10 +88,13 @@ carriageReturn="
         'Support/Str'
         'Support/Debug/Dumper'
         'Support/Debug/HtmlDumper'
+        'Support/Enumerable'
+        'Support/LazyCollection'
     )
 
     traits=(
         'Support/Traits/Macroable.php'
+        'Support/Traits/EnumeratesValues.php'
     )
 
     contracts=(
