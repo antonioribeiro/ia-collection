@@ -4,7 +4,6 @@ use IlluminateAgnostic\Collection\Support\Str;
 use IlluminateAgnostic\Collection\Support\Arr;
 use IlluminateAgnostic\Collection\Support\Collection;
 use IlluminateAgnostic\Collection\Support\Debug\Dumper;
-use Illuminate\Support\Collection as IlluminateCollection;
 
 if (!class_exists(Illuminate\Support\Collection::class)) {
     if (! function_exists('collect')) {
@@ -12,7 +11,7 @@ if (!class_exists(Illuminate\Support\Collection::class)) {
          * Create a collection from the given value.
          *
          * @param  mixed  $value
-         * @return \Illuminate\Support\Collection|\Vanilla\Support\Collection
+         * @return \IlluminateAgnostic\Collection\Support\Collection|\Illuminate\Support\Collection
          */
         function collect($value = null)
         {

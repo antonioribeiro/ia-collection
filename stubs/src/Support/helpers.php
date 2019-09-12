@@ -4,9 +4,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Debug\Dumper;
-use Vanilla\Support\Collection as VanillaCollection;
 
-if (!class_exists(Illuminate\Support\Collection::class)) {
+if (!class_exists(Vanilla\Support\Collection::class)) {
     if (! function_exists('collect')) {
         /**
          * Create a collection from the given value.
