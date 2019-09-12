@@ -12,7 +12,7 @@ if (!class_exists(Illuminate\Support\Collection::class)) {
          * Create a collection from the given value.
          *
          * @param  mixed  $value
-         * @return \IlluminateAgnostic\Collection\Support\Collection|\Illuminate\Support\Collection
+         * @return \Illuminate\Support\Collection|\Vanilla\Support\Collection
          */
         function collect($value = null)
         {
@@ -73,6 +73,19 @@ if (!class_exists(Illuminate\Support\Collection::class)) {
             }
 
             return $target;
+        }
+    }
+
+    if (! function_exists('with')) {
+        /**
+         * Return the given object. Useful for chaining.
+         *
+         * @param  mixed  $object
+         * @return mixed
+         */
+        function with($object)
+        {
+            return $object;
         }
     }
 
