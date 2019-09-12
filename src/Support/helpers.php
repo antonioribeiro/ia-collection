@@ -75,20 +75,6 @@ if (! function_exists('data_get')) {
     }
 }
 
-
-if (! function_exists('with')) {
-    /**
-     * Return the given object. Useful for chaining.
-     *
-     * @param  mixed  $object
-     * @return mixed
-     */
-    function with($object)
-    {
-        return $object;
-    }
-}
-
 if (! function_exists('dd')) {
     /**
      * Dump the passed variables and end the script.
@@ -102,18 +88,5 @@ if (! function_exists('dd')) {
             (new Dumper)->dump($x);
         }
         die(1);
-    }
-}
-
-if (! function_exists('studly_case')) {
-    /**
-     * Convert a value to studly caps case.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    function studly_case($value)
-    {
-        return Str::studly($value);
     }
 }
