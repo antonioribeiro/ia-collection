@@ -22,7 +22,7 @@
         "php": ">=7.0",
         "nesbot/carbon": "^1.26 || ^2.00",
         "ramsey/uuid": "~3.7|~4.0",
-        "symfony/var-dumper": "~3.3|~4.0|~5.0|^6.0",
+        "symfony/var-dumper": "~3.3|~4.0|~5.0|^6.0|^7.0",
         "voku/portable-ascii": "^1.4|^2.0"
     },
     "require-dev": {
